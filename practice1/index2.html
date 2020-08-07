@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 자바스크립트 안에서 html 태그를 사용하기 위해서는 babel을 사용해야 한다. 바벨:JSX를 createElement문법으로 바꿔줌
+      class LikeButton extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            liked: false,
+          };
+        }
+        render() {
+          // JSX라고 부른다. 자바스크립트 + XML의 느낌(닫는 괄호를 꼭 해줘야 한다)
+          return (
+            <button type="submit" onClick={() => this.setState({ liked: true })}>
+              {this.state.liked ? "Liked" : "Like"}
+            </button>
+          );
+        }
+      }
+    </script>
+    <script type="text/babel">
+      // ReactDOM.render(<LikeButton />, document.querySelector("#root"));
+      // 여러 개를 하려면 div 안에 여러 개 두면 된다.
+      ReactDOM.render(
+        <div>
+          <LikeButton />
+          <LikeButton />
+          <LikeButton />
+          <LikeButton />
+        </div>,
+        document.querySelector("#root")
+      );
+    </script>
+  </body>
+</html>

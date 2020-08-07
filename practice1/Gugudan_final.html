@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>구구단</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class GuguDan extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            first: Math.ceil(Math.random() * 9),
+            second: Math.ceil(Math.random() * 9),
+            value: "",
+            result: "",
+            right: 0,
+            wrong: 0,
+          };
+        }
+        // setState는 render()를 실행한다. 즉, 너무 많이 쓰면 느려질 수 있다.
+        onSubmit = (e) => {
+          e.preventDefault();
+          if (this.state.value === "") {
+            this.setState({
+              value: "",
+              result: "답을 입력하세요!",
+            });
+          } else if (parseInt(this.state.value) === this.state.first * this.state.second) {
+            this.setState({
+              first: Math.ceil(Math.random() * 9),
+              second: Math.ceil(Math.random() * 9),
+              value: "",
+              result: `${this.state.value} 정답!`,
+              right: this.state.right + 1,
+            });
+          } else {
+            this.setState((prevState) => {
+              return {
+                value: "",
+                result: `${prevState.value} 오답!`,
+                wrong: prevState.wrong + 1,
+              };
+            });
+          }
+          this.inputEl.focus(); // 클릭 후에 다시 focusing 된다.
+        };
+        onChange = (e) => this.setState({ value: e.target.value });
+
+        // ref로 제어할 태그
+        myRef = (c) => (this.inputEl = c);
+        inputEl;
+
+        render() {
+          // 아래 input에 ref를 통해서 inputEl이라는 변수로 input을 제어할 수 있게 된다.
+          return (
+            <>
+              <div>
+                {this.state.first}곱하기 {this.state.second}는?
+              </div>
+              <form onSubmit={this.onSubmit}>
+                <input ref={this.myRef} type="number" value={this.state.value} onChange={this.onChange} />
+                <button>입력!</button>
+              </form>
+              <div>{this.state.result}</div>
+              <>
+                <p>정답 횟수 : {this.state.right}</p>
+                <p>오답 횟수 : {this.state.wrong}</p>
+              </>
+            </>
+          );
+        }
+      }
+    </script>
+    <script type="text/babel">
+      ReactDOM.render(<GuguDan />, document.querySelector("#root"));
+    </script>
+  </body>
+</html>

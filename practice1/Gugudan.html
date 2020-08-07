@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>구구단</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class GuguDan extends React.Component {
+        constructor(props) {
+          super(props);
+          // 필요한 state: first*second의 숫자 두 개, 입력창 내용, 결과창 총 네 개
+          this.state = {
+            first: Math.ceil(Math.random() * 9),
+            second: Math.ceil(Math.random() * 9),
+            value: "",
+            result: "",
+            right: 0,
+            wrong: 0,
+          };
+        }
+
+        // 여기에 class 메소드를 입력해서 사용하는 습관을 들이는 것이 좋다.
+        // 단 이렇게 빼면 this가 가리키는 것이 달라지기 때문에 무조건 화살표 함수 쓰자.
+        // 바뀌어야 하는 state는 자신이 모두 컨트롤 해야 하는 것이다.
+        onSubmit = (e) => {
+          e.preventDefault();
+          if (this.state.value === "") {
+            this.setState({
+              value: "",
+              result: "답을 입력하세요!",
+            });
+          } else if (parseInt(this.state.value) === this.state.first * this.state.second) {
+            this.setState({
+              first: Math.ceil(Math.random() * 9),
+              second: Math.ceil(Math.random() * 9),
+              value: "",
+              result: `${this.state.value} 정답!`,
+              right: this.state.right + 1,
+            });
+          } else {
+            // 다른 방식!! setState 안에 이전 state을 매개변수로 함수를 넣고 return 해주면 편하다.
+            // setState를 연달아서 세 번 쓰면 wrong이 +3이 될 것 같지만 비동기라서 아닐 수 있다.
+            // 때문에 예전 상태를 이용해야 할 때는 함수식으로 사용하는 것이 좋다!
+            this.setState((prevState) => {
+              return {
+                value: "",
+                result: `${prevState.value} 오답!`,
+                wrong: prevState.wrong + 1,
+              };
+            });
+          }
+        };
+        onChange = (e) => this.setState({ value: e.target.value }); // 입력창에 적은 것을 state에 넣어줌
+
+        render() {
+          return (
+            // {} 안에 js 문법 사용 가능
+            // xml이라서 single 태그는 닫는 표시를 꼭 해줘야 한다. 더 엄격하다.
+            // div로 쓸데없이 하나 감싸야 하던 것을 빈 태그로 감싸면 안 보인다.
+            <>
+              <div>
+                {this.state.first}곱하기 {this.state.second}는?
+              </div>
+              <form onSubmit={this.onSubmit}>
+                <input type="number" value={this.state.value} onChange={this.onChange} />
+                <button>입력!</button>
+              </form>
+              <div>{this.state.result}</div>
+              <>
+                <p>정답 횟수 : {this.state.right}</p>
+                <p>오답 횟수 : {this.state.wrong}</p>
+              </>
+            </>
+          );
+        }
+      }
+    </script>
+    <script type="text/babel">
+      ReactDOM.render(<GuguDan />, document.querySelector("#root"));
+    </script>
+  </body>
+</html>
