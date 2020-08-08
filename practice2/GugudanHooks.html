@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 함수 컴포넌트라고 부른다. 보통 setState나 ref가 필요 없을 때 썼다.
+      // 여기서 더 나아가서 이 안에서도 둘을 쓸 수 있게 한 것이 바로 hooks이다.
+      const GuguDan = () => {
+        // state 선언법, useState() 안에 초기값을 넣어주면 된다. 무조건 함수 안에 존재해야 한다.
+        const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
+        const [second, setSecond] = React.useState(
+          Math.ceil(Math.random() * 9)
+        );
+        const [value, setValue] = React.useState("");
+        const [result, setResult] = React.useState("");
+        const inputRef = React.useRef(null); // 초기값으로 null을 넣어줌
+
+        // 내부 함수
+        const onChangeInput = (e) => {
+          setValue(e.target.value);
+        };
+        const onSubmitForm = (e) => {
+          e.preventDefault();
+          if (value === "") {
+            setValue("");
+            setResult("답을 입력하세요!");
+          } else if (parseInt(value) === first * second) {
+            setFirst(Math.ceil(Math.random() * 9));
+            setSecond(Math.ceil(Math.random() * 9));
+            setValue("");
+            setResult(`${value} 정답!`);
+          } else {
+            setValue("");
+            setResult(`${value} 오답!`);
+          }
+          inputRef.current.focus(); // DOM에 접근하기 위해서는 current를 적어줘야 한다.
+        };
+
+        return (
+          <>
+            <div>
+              {first} 곱하기 {second} 는?
+            </div>
+            <form onSubmit={onSubmitForm}>
+              <input
+                ref={inputRef}
+                onChange={onChangeInput}
+                type="number"
+                value={value}
+              />
+              <button>입력!</button>
+            </form>
+            <div id="result">{result}</div>
+          </>
+        );
+      };
+    </script>
+    <script type="text/babel">
+      ReactDOM.render(<GuguDan />, document.querySelector("#root"));
+    </script>
+  </body>
+</html>
