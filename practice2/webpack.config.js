@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   name: "wordRelay-setting", // 어떤 것에 대한 설정인지
@@ -20,15 +21,31 @@ module.exports = {
         test: /\.jsx?/,
         loader: "babel-loader",
         options: {
-          presets: ["@babel/preset-env", "@babel/preset-react"],
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                targets: {
+                  browsers: ["> 5% in KR"],
+                },
+              },
+            ],
+            "@babel/preset-react",
+          ],
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "react-hot-loader/babel", // hot loader을 쓰기 위해서
+          ],
         },
       },
     ],
   },
+  plugins: [new webpack.LoaderOptionsPlugin({ debug: true })],
   output: {
     // 출력
     path: path.join(__dirname, "dist"),
     filename: "app.js",
+    publicPath: "/dist/", // webpack dev server을 쓰기 위해서 node의 /dist express.static와 비슷
   },
 };
 // npx webpack으로 실행
