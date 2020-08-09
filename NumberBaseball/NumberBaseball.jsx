@@ -63,9 +63,11 @@ class NumberBaseball extends Component {
             ball += 1;
           }
         }
-        this.setState({
-          tries: [...tries, { try: value, result: `${strike} 스트라이크, ${ball}볼!` }],
-          value: "",
+        this.setState((prev) => {
+          return {
+            tries: [...prev.tries, { try: value, result: `${strike} 스트라이크, ${ball}볼!` }],
+            value: "",
+          };
         });
       }
     }
