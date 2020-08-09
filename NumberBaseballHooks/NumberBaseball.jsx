@@ -27,7 +27,6 @@ const NumberBaseball = () => {
         return [...prev, { try: value, result: "홈런!" }]; // 옛날 걸로 만들면 함수형
       });
       alert("게임을 다시 시작함");
-      setResult("");
       setValue("");
       setAnswer(getNumbers());
       setTries([]);
@@ -38,7 +37,6 @@ const NumberBaseball = () => {
       if (tries.length >= 9) {
         setResult(`10번 넘게 틀려서 실패! 답은 ${answer.join(",")}이었다.`);
         alert("게임을 다시 시작함");
-        setResult("");
         setValue("");
         setAnswer(getNumbers());
         setTries([]);

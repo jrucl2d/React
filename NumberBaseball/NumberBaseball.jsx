@@ -35,7 +35,6 @@ class NumberBaseball extends Component {
       });
       alert("게임을 다시 시작함");
       this.setState({
-        result: "",
         value: "",
         answer: getNumbers(),
         tries: [],
@@ -50,7 +49,6 @@ class NumberBaseball extends Component {
         });
         alert("게임을 다시 시작함");
         this.setState({
-          result: "",
           value: "",
           answer: getNumbers(),
           tries: [],
