@@ -24,11 +24,14 @@ class NumberBaseball extends Component {
     const { value, answer, tries, result } = this.state;
     e.preventDefault();
     if (value === answer.join("")) {
-      this.setState({
-        result: "홈런!",
-        // 참조가 바뀌어야지 리액트에서 감지할 수 있다. 따라서 push 하면 안 되고
-        // ...this.state.tries, 즉 예전 배열을 복사하고 새로운 걸 넣어주는 방식으로 해야 한다.
-        tries: [...tries, { try: value, result: "홈런!" }],
+      this.setState((prev) => {
+        // 여기도 연달아 setState가 등장하므로 함수형으로 쓰는 것이 좋다.
+        return {
+          result: "홈런!",
+          // 참조가 바뀌어야지 리액트에서 감지할 수 있다. 따라서 push 하면 안 되고
+          // ...this.state.tries, 즉 예전 배열을 복사하고 새로운 걸 넣어주는 방식으로 해야 한다.
+          tries: [...prev.tries, { try: value, result: "홈런!" }],
+        };
       });
       alert("게임을 다시 시작함");
       this.setState({
