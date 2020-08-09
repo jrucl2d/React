@@ -1,4 +1,4 @@
-import React, { Component } from "react"; // 한 번에 합쳐줄 수 있다.
+import React, { Component, createRef } from "react"; // 한 번에 합쳐줄 수 있다.
 import Try from "./Try";
 
 // 숫자 네 개를 겹치지 않게 랜덤하게 뽑는 함수, this 안 쓰면 밖으로 뺄수 있다.
@@ -19,6 +19,8 @@ class NumberBaseball extends Component {
     answer: getNumbers(),
     tries: [], // 리액트에서 push 쓰면 안 됨
   };
+  // 함수를 사용하면 안에 console.log를 사용한다던가 미세한 조정 가능. 선택의 문제.
+  inputRef = createRef(); // import해서 사용 가능
 
   onSubmitForm = (e) => {
     const { value, answer, tries, result } = this.state;
@@ -69,17 +71,16 @@ class NumberBaseball extends Component {
         });
       }
     }
+    this.inputRef.current.focus();
   };
-  inputElem;
-  myRef = (c) => {
-    this.inputElem = c;
-  };
+
   onChangeInput = (e) => {
     this.setState({
       value: e.target.value,
     });
   };
 
+  // render 안에 setState 쓰면 무하 반복이 생긴다. setState가 render를 부르고, render 안에 setState가 있어서.
   render() {
     const { result, value, tries } = this.state; // 비구조화 할당으로 코드를 더 간결하게 가능
     return (
@@ -87,7 +88,7 @@ class NumberBaseball extends Component {
         <h1>{result}</h1>
         <form onSubmit={this.onSubmitForm}>
           {/* input 부분에 value와 onchange를 안 쓰고 defaultValue로도 할 수 있다. */}
-          <input maxLength={4} value={value} onChange={this.onChangeInput} ref={this.myRef} />
+          <input maxLength={4} value={value} onChange={this.onChangeInput} ref={this.inputRef} />
           <button>제출</button>
         </form>
         <div>시도 : {tries.length}</div>
