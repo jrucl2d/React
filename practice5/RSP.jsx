@@ -1,9 +1,4 @@
-import React, { Component } from "react";
-
-// class의 경우 컴포넌트 라이프 사이클
-// constructor(state 등) -> render -> ref -> componentDidMount -> (setState/props 바뀔 때) ->
-// shouldComponentUpdate가 return true인 경우 리렌더링 필요하므로 false면 안 일어남 -> render ->
-// componentDidUpdate -> 부모가 없애면 -> componentWillUnmount -> 소멸
+import React, { useState, useRef, useEffect } from "react";
 
 const rspCoords = {
   바위: "0",
@@ -21,99 +16,77 @@ const computerChoice = (imgCoord) => {
   })[0];
 };
 
-class RSP extends Component {
-  state = {
-    result: "",
-    imgCoord: 0,
-    score: 0,
-  };
+const RSP = () => {
+  const [result, setResult] = useState("");
+  const [imgCoord, setImgCoord] = useState(0);
+  const [score, setScore] = useState(0);
+  const interval = useRef(null);
 
-  interval;
+  // componentDidMount, componentDidUpdate 역할(1대 1 대응은 아니지만)
+  // 두 번째 인자 배열이 클로져 문제 같은 것을 해결 해줌.
+  // useEffect를 실행하고 싶은 state(여기서는 imgCoord)가 들어감
+  // 훅스는 매번 이 함수 전체가 다시 실행된다. 즉, useEffect가 매번 실행되면서 setInterval이
+  // 실행되었다가 clearInterval로 종료되고가 반복된다. 즉, imgCoord가 바뀔 때마다 setInteval이
+  // 실행되었다가 꺼졌다가를 반복한다. 즉, setTimeout과 같은 역할을 하게 된다.
+  // 배열이 비어있다면 어떤게 바뀌던지 상관 안 하고 한 번만 바뀌고 만다. 즉 비면 didMount, 있으면 didUpdate 역할.
+  // class에서는 did시리즈가 딱 한 번 쓰여서 그 안에서 모든 state를 처리하지만 useEffect는 원하는
+  // state마다 여러번 쓸 수 있다.
+  useEffect(() => {
+    interval.current = setInterval(changeHand, 100);
+    return () => {
+      // return이 componentWillUnmount 역할
+      clearInterval(interval.current);
+    };
+  }, [imgCoord]);
 
-  changeHand = () => {
-    const { imgCoord } = this.state; // 주의! 이게 비동기 함수 밖에 있으면 클로져 문제가 발생한다.
+  // uselayoutEffect는 레이아웃이 변경되면이기 때문에 useEffect랑 다르게 바뀌기 전에 실행된다.
+
+  const changeHand = () => {
     if (imgCoord === rspCoords.바위) {
-      this.setState({
-        imgCoord: rspCoords.가위,
-      });
+      setImgCoord(rspCoords.가위);
     } else if (imgCoord === rspCoords.가위) {
-      this.setState({
-        imgCoord: rspCoords.보,
-      });
+      setImgCoord(rspCoords.보);
     } else {
-      this.setState({
-        imgCoord: rspCoords.바위,
-      });
+      setImgCoord(rspCoords.바위);
     }
   };
 
-  // 컴포넌트를 쓰고 싶은데 어디서 써야할지 모르겠을 때! render안에 쓰면 무한 루프 생기기 때문에
-  // 라이프 사이클 - 컴포넌트가 처음 렌더링된 후 -> 여기에 비동기 요청을 많이 함
-  componentDidMount() {
-    // 1초마다 바위면 후에 가위, 가위면 후에 보, 보면 후에 바위 보이도록
-    this.interval = setInterval(this.changeHand, 100);
-  }
-
-  // 라이프 사이클 - 리렌더링 될 때
-  //   componentDidUpdate() {}
-
-  // 라이프 사이클 - 컴포넌트가 제거되기 직전 -> 비동기 요청을 정리함
-  componentWillUnmount() {}
-
-  // 만약 e.preventDefault같은거 쓰고 싶으면 옆에 빈 ()에 e 넣어주면 된다.
-  onClickBtn = (choice) => () => {
-    const { imgCoord } = this.state;
-    clearInterval(this.interval);
+  const onClickBtn = (choice) => () => {
+    clearInterval(interval.current);
     const myScore = scores[choice];
     const computerScore = scores[computerChoice(imgCoord)];
     const diff = myScore - computerScore;
     if (diff === 0) {
-      this.setState({
-        result: "비겼습니다",
-      });
+      setResult("비겼습니다");
     } else if ([-1, 2].includes(diff)) {
-      this.setState((prevState) => {
-        return {
-          result: "이겼습니다",
-          score: prevState.score + 1,
-        };
-      });
+      setResult("비겼습니다");
+      setScore((prevScore) => prevScore + 1);
     } else {
-      this.setState((prevState) => {
-        return {
-          result: "졌습니다",
-          score: prevState.score - 1,
-        };
-      });
+      setResult("졌습니다");
+      setScore((prevScore) => prevScore - 1);
     }
-    // 결과 1초 뒤 다시 진행
     setTimeout(() => {
-      this.interval = setInterval(this.changeHand, 100);
+      interval.current = setInterval(changeHand, 100);
     }, 1000);
   };
 
-  render() {
-    const { result, score, imgCoord } = this.state;
-    return (
-      <>
-        <div id="computer" style={{ background: `url(https://en.pimg.jp/023/182/267/1/23182267.jpg) ${imgCoord} 0` }}></div>
-        <div>
-          {/* 여기를 onClick={()=>this.onClickBtn('바위')}처럼 쓰면 onClickBtn = (choice)=>{}로 되지만
-            아래와 같이 바로 쓰려면 (choice)=>()=>{}이렇게 한 번 더 거쳐줘야 한다. */}
-          <button id="rock" className="btn" onClick={this.onClickBtn("바위")}>
-            바위
-          </button>
-          <button id="scissor" className="btn" onClick={this.onClickBtn("가위")}>
-            가위
-          </button>
-          <button id="paper" className="btn" onClick={this.onClickBtn("보")}>
-            보
-          </button>
-        </div>
-        <div>{result}</div>
-        <div>현재 {score} 점</div>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div id="computer" style={{ background: `url(https://en.pimg.jp/023/182/267/1/23182267.jpg) ${imgCoord} 0` }}></div>
+      <div>
+        <button id="rock" className="btn" onClick={onClickBtn("바위")}>
+          바위
+        </button>
+        <button id="scissor" className="btn" onClick={onClickBtn("가위")}>
+          가위
+        </button>
+        <button id="paper" className="btn" onClick={onClickBtn("보")}>
+          보
+        </button>
+      </div>
+      <div>{result}</div>
+      <div>현재 {score} 점</div>
+    </>
+  );
+};
 export default RSP;
