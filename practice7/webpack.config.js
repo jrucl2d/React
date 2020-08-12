@@ -10,16 +10,20 @@ module.exports = {
     app: "./client",
   },
   module: {
-    rules: [
-      {
-        test: /\.jsx?/,
-        loader: "babel-loader",
-        options: {
-          presets: [["@babel/preset-env", { targets: { browsers: ["> 5% in KR"] } }], "@babel/preset-react"],
-          plugins: ["@babel/plugin-proposal-class-properties", "react-hot-loader/babel"],
-        },
+    rules: {
+      test: /\.jsx?/,
+      loader: "babel-loader",
+      options: {
+        presets: [
+          ["@babel/preset-env", { targets: { browsers: ["> 5% in KR"] } }],
+          "@babel/preset-react",
+        ],
+        plugins: [
+          "@babel/plugin-proposal-class-properties",
+          "react-hot-loader/babel",
+        ],
       },
-    ],
+    },
   },
   plugins: [],
   output: {
