@@ -15,7 +15,7 @@ class TicTacToe extends Component {
     const { winner, turn, tableData } = this.state;
     return (
       <>
-        <Table tableData={tableData} />
+        <Table gameState={this.state} tableData={tableData} />
         {winner && <div>승자는 {winner}입니다.</div>}
       </>
     );

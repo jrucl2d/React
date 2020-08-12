@@ -4,14 +4,18 @@ import Tr from "./Tr";
 class Table extends Component {
   state = {};
   render() {
-    const { tableData } = this.props;
-    console.log(tableData.length);
+    const { gameState, tableData } = this.props;
     return (
       <table>
         {Array(tableData.length)
           .fill()
           .map((tr, i) => (
-            <Tr key={i} rowData={tableData[i]}></Tr>
+            <Tr
+              key={i}
+              gameState={gameState}
+              row={i}
+              rowData={tableData[i]}
+            ></Tr>
           ))}
       </table>
     );

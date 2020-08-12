@@ -4,13 +4,19 @@ import Td from "./Td";
 class Tr extends Component {
   state = {};
   render() {
-    const { rowData } = this.props;
+    const { gameState, row, rowData } = this.props;
     return (
       <tr>
         {Array(rowData.length)
           .fill()
           .map((td, i) => (
-            <Td key={i} colData={rowData[i]}></Td>
+            <Td
+              key={i}
+              gameState={gameState}
+              row={row}
+              col={i}
+              colData={rowData[i]}
+            ></Td>
           ))}
       </tr>
     );
