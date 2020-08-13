@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, memo } from "react";
+import React, { useContext, useCallback, memo, useMemo } from "react";
 import { TableContext, CODE, OPEN_CELL, CLICK_MINE, NORMALIZE_CELL, FLAG_CELL, QUESTION_CELL } from "./Mine";
 
 const getTdStyle = (code) => {
@@ -30,7 +30,7 @@ const getTdStyle = (code) => {
   }
 };
 const getTdText = (code) => {
-  console.log("getTdtext");
+  console.log("getTdtext"); // 컴포넌트 함수 자체는 100번 실행되지만 리렌더링은 딱 한 번 실행되는 것을 확인 가능.
   switch (code) {
     case CODE.NORMAL:
       return "";
@@ -99,9 +99,26 @@ const Td = memo(({ rowIndex, colIndex }) => {
     [tableData[rowIndex][colIndex], halted]
   );
 
+  console.log("td rendered");
+  // 모든 칸이 리렌더링 되는 것을 막기 위해서
+  //   return useMemo(
+  //     () => (
+  //       <td style={getTdStyle(tableData[rowIndex][colIndex])} onClick={onClickTd} onContextMenu={onRightClick}>
+  //         {getTdText(tableData[rowIndex][colIndex])}
+  //       </td>
+  //     ),
+  //     [tableData[rowIndex][colIndex]]
+  //   );
+
+  return <RealTd onClickTd={onClickTd} onRightClick={onRightClick} data={tableData[rowIndex][colIndex]} />;
+});
+
+// 이렇게 분리 가능
+const RealTd = memo(({ onClickTd, onRightClick, data }) => {
+  console.log("real td rendered");
   return (
-    <td style={getTdStyle(tableData[rowIndex][colIndex])} onClick={onClickTd} onContextMenu={onRightClick}>
-      {getTdText(tableData[rowIndex][colIndex])}
+    <td style={getTdStyle(data)} onClick={onClickTd} onContextMenu={onRightClick}>
+      {getTdText(data)}
     </td>
   );
 });
