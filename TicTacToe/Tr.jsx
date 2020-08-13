@@ -1,25 +1,17 @@
-import React, { Component } from "react";
+import React, { useContext, memo } from "react";
 import Td from "./Td";
+import { TableContext } from "./TicTacToe";
 
-class Tr extends Component {
-  state = {};
-  render() {
-    const { gameState, row, rowData } = this.props;
-    return (
-      <tr>
-        {Array(rowData.length)
+const Tr = memo(({ rowIndex }) => {
+  const { tableData } = useContext(TableContext);
+  // console.log("tr rendered");
+  return (
+    <tr>
+      {tableData &&
+        Array(tableData[0].length)
           .fill()
-          .map((td, i) => (
-            <Td
-              key={i}
-              gameState={gameState}
-              row={row}
-              col={i}
-              colData={rowData[i]}
-            ></Td>
-          ))}
-      </tr>
-    );
-  }
-}
+          .map((td, i) => <Td key={i} rowIndex={rowIndex} colIndex={i} />)}
+    </tr>
+  );
+});
 export default Tr;

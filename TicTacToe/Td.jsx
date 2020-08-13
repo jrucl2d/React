@@ -1,18 +1,16 @@
-import React, { Component } from "react";
+import React, { memo, useCallback, useContext } from "react";
+import { SET_CELL, TableContext } from "./TicTacToe";
 
-class Td extends Component {
-  state = {
-    point: "",
-  };
+const Td = memo(({ rowIndex, colIndex }) => {
+  // console.log("td rendered");
+  const { tableData, dispatch } = useContext(TableContext);
+  const onClickTd = useCallback(() => {
+    if (tableData[rowIndex][colIndex]) {
+      return;
+    }
+    dispatch({ type: SET_CELL, row: rowIndex, col: colIndex });
+  }, [tableData[rowIndex][colIndex]]);
 
-  onClickPoint = (row, col) => {
-    console.log(row);
-  };
-
-  render() {
-    const { gameState, row, col, colData } = this.props;
-
-    return <td onClick={this.onClickPoint(row, col)}>{this.state.point}</td>;
-  }
-}
+  return <td onClick={onClickTd}>{tableData[rowIndex][colIndex]}</td>;
+});
 export default Td;
