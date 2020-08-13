@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, memo } from "react";
 import { TableContext, CODE, OPEN_CELL, CLICK_MINE, NORMALIZE_CELL, FLAG_CELL, QUESTION_CELL } from "./Mine";
 
 const getTdStyle = (code) => {
@@ -45,11 +45,11 @@ const getTdText = (code) => {
     case CODE.QUESTION:
       return "?";
     default:
-      return "";
+      return code || ""; // 0이면 빈칸, 아니면 개수를 보여줌
   }
 };
 
-const Td = ({ rowIndex, colIndex }) => {
+const Td = memo(({ rowIndex, colIndex }) => {
   const { tableData, dispatch, halted } = useContext(TableContext);
   // 칸 클릭 시
   const onClickTd = useCallback(() => {
@@ -104,6 +104,6 @@ const Td = ({ rowIndex, colIndex }) => {
       {getTdText(tableData[rowIndex][colIndex])}
     </td>
   );
-};
+});
 
 export default Td;
