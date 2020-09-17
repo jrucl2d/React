@@ -1,14 +1,16 @@
 import React from "react";
 import "./App.css";
-import MyComponent from "./MyComponent";
+// import MyComponent from "./MyComponent";
+import Counter from "./Counter";
 
 const App = () => {
   // return <MyComponent name="React" />;
   // return <MyComponent />; // defaultProps 값이 사용됨
   return (
-    <MyComponent name="으쟁이" favoriteNumber={3}>
-      리액트
-    </MyComponent>
+    <Counter />
+    // <MyComponent name="으쟁이" favoriteNumber={3}>
+    //   리액트
+    // </MyComponent>
   ); // props.children으로 표시
 };
 
