@@ -1,9 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
 import MyComponent from "./MyComponent";
 
 const App = () => {
-  return <MyComponent />;
+  // return <MyComponent name="React" />;
+  // return <MyComponent />; // defaultProps 값이 사용됨
+  return (
+    <MyComponent name="으쟁이" favoriteNumber={3}>
+      리액트
+    </MyComponent>
+  ); // props.children으로 표시
 };
 
 // class App extends Component {
