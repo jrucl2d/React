@@ -1,8 +1,9 @@
 import React from "react";
-import EventPractice_func from "./EventPractice_func";
+// import EventPractice_func from "./EventPractice_func";
+import ValidationSample from "./ValidationSample";
 
 const App = () => {
-  return <EventPractice_func />;
+  return <ValidationSample />;
 };
 
 export default App;
