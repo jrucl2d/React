@@ -1,8 +1,8 @@
 import React from "react";
-import EventPractice from "./EventPractice";
+import EventPractice_func from "./EventPractice_func";
 
 const App = () => {
-  return <EventPractice />;
+  return <EventPractice_func />;
 };
 
 export default App;
