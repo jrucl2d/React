@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Counter from "./Counter";
-import Info from "./Info";
+import Info from "./Info.jsx";
 import Average from "./Average";
 
 function App() {
-  return <Average />;
-  // return <Info />;
+  // return <Average />;
+  return <Info />;
   // return <Counter />;
   // const [visible, setVisible] = useState(false);
   // return (
