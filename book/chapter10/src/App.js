@@ -1,7 +1,12 @@
 import React from "react";
 import TodoTemplate from "./components/TodoTemplate";
+import TodoInsert from "./components/TodoInsert";
 
 const App = () => {
-  return <TodoTemplate>Todo App</TodoTemplate>;
+  return (
+    <TodoTemplate>
+      <TodoInsert />
+    </TodoTemplate>
+  );
 };
 export default App;
