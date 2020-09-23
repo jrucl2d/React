@@ -38,10 +38,17 @@ const App = () => {
     [todos]
   );
 
+  const onRemove = useCallback(
+    (id) => {
+      setTodos(todos.filter((todo) => todo.id !== id)); // 선택된 아이디가 아닌 todo만 걸러서 setTodo해줌
+    },
+    [todos]
+  );
+
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} onRemove={onRemove} />
     </TodoTemplate>
   );
 };
