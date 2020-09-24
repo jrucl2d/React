@@ -1,5 +1,4 @@
 import React, { useRef, useCallback, useState } from "react";
-import produce from "immer";
 
 const App = () => {
   const nextId = useRef(1);
@@ -13,11 +12,10 @@ const App = () => {
   const onChange = useCallback(
     (e) => {
       const { name, value } = e.target; // input.name, input.value
-      setForm(
-        produce((draft) => {
-          draft[name] = value;
-        })
-      );
+      setForm({
+        ...form,
+        [name]: [value],
+      });
     },
     [form]
   );
@@ -31,12 +29,10 @@ const App = () => {
         username: form.username,
       };
       // array에 새로운 항목 등록
-      setData(
-        // 객체 직접 건드리는 splice나 push 같은 함수 써도 된다.
-        produce((draft) => {
-          draft.array.push(info);
-        })
-      );
+      setData({
+        ...data,
+        array: data.array.concat(info),
+      });
       // form 초기화
       setForm({
         name: "",
@@ -44,21 +40,19 @@ const App = () => {
       });
       nextId.current += 1;
     },
-    [form.name, form.username]
+    [data, form.name, form.username]
   );
 
   // 항목을 삭제하는 함수
-  const onRemove = useCallback((id) => {
-    setData(
-      // 객체 직접 건드리는 splice나 push 같은 함수 써도 된다.
-      produce((draft) => {
-        draft.array.splice(
-          draft.array.findIndex((info) => info.id === id),
-          1
-        );
-      })
-    );
-  }, []);
+  const onRemove = useCallback(
+    (id) => {
+      setData({
+        ...data,
+        array: data.array.filter((info) => info.id !== id),
+      });
+    },
+    [data]
+  );
 
   return (
     <>
