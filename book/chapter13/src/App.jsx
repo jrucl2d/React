@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Link } from "react-router-dom";
 import About from "./About";
 import Home from "./Home";
+import Profile from "./Profile";
 
 const App = () => {
   return (
@@ -17,12 +18,20 @@ const App = () => {
         <li>
           <Link to="/info">정보</Link>
         </li>
+        <li>
+          <Link to="/profile/velopert">velopert 프로필</Link>
+        </li>
+        <li>
+          <Link to="/profile/gildong">gildong 프로필</Link>
+        </li>
       </ul>
       <hr />
       {/* exact를 true로 안 하면 /about을 쳐도 /에도 걸려서 /도 나타난다. */}
       <Route path="/" component={Home} exact={true} />
       {/* 다른 주소로 같은 라우터 접근 가능 */}
       <Route path={["/about", "/info"]} component={About} />
+      {/* match.params를 통해서 username 정보를 가져올 수 있다.  */}
+      <Route path="/profile/:username" component={Profile} />
     </>
   );
 };
