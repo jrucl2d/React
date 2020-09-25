@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Link } from "react-router-dom";
 import About from "./About";
 import Home from "./Home";
-import Profile from "./Profile";
+import Profiles from "./Profiles";
 
 const App = () => {
   return (
@@ -19,10 +19,7 @@ const App = () => {
           <Link to="/info">정보</Link>
         </li>
         <li>
-          <Link to="/profile/velopert">velopert 프로필</Link>
-        </li>
-        <li>
-          <Link to="/profile/gildong">gildong 프로필</Link>
+          <Link to="/profiles">프로필</Link>
         </li>
       </ul>
       <hr />
@@ -31,7 +28,7 @@ const App = () => {
       {/* 다른 주소로 같은 라우터 접근 가능 */}
       <Route path={["/about", "/info"]} component={About} />
       {/* match.params를 통해서 username 정보를 가져올 수 있다.  */}
-      <Route path="/profile/:username" component={Profile} />
+      <Route path="/profiles" component={Profiles} />
     </>
   );
 };
