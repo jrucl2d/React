@@ -3,6 +3,7 @@ import { Route, Link } from "react-router-dom";
 import About from "./About";
 import Home from "./Home";
 import Profiles from "./Profiles";
+import HistorySample from "./HistorySample";
 
 const App = () => {
   return (
@@ -21,6 +22,9 @@ const App = () => {
         <li>
           <Link to="/profiles">프로필</Link>
         </li>
+        <li>
+          <Link to="/history">History 예시</Link>
+        </li>
       </ul>
       <hr />
       {/* exact를 true로 안 하면 /about을 쳐도 /에도 걸려서 /도 나타난다. */}
@@ -28,7 +32,8 @@ const App = () => {
       {/* 다른 주소로 같은 라우터 접근 가능 */}
       <Route path={["/about", "/info"]} component={About} />
       {/* match.params를 통해서 username 정보를 가져올 수 있다.  */}
-      <Route path="/profiles" component={Profiles} />
+      <Route path="/profiles" component={Profiles} />{" "}
+      <Route path="/history" component={HistorySample} />
     </>
   );
 };
