@@ -1,17 +1,33 @@
 import React from "react";
-import { Link, Route } from "react-router-dom";
+import { NavLink, Route } from "react-router-dom";
 import Profile from "./Profile";
 
 const Profiles = () => {
+  const activeStyle = {
+    background: "black",
+    color: "white",
+  };
   return (
     <div>
       <h3>사용자 목록:</h3>
       <ul>
         <li>
-          <Link to="/profiles/velopert">velopert</Link>
+          <NavLink
+            to="/profiles/velopert"
+            activeStyle={activeStyle} // 활성화되었을 때의 스타일
+            activeClassName="selected" // 활성화되었을 때의 클래스
+          >
+            velopert
+          </NavLink>
         </li>
         <li>
-          <Link to="/profiles/gildong">gildong</Link>
+          <NavLink
+            to="/profiles/gildong"
+            activeStyle={activeStyle}
+            activeClassName="selected"
+          >
+            gildong
+          </NavLink>
         </li>
       </ul>
 
