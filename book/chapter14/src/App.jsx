@@ -1,32 +1,19 @@
 import React, { useState } from "react";
-import axios from "axios";
+import NewsList from "./components/NewsList";
 
 const App = () => {
-  const [data, setData] = useState(null);
-  const onClick = async () => {
-    try {
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/todos/1"
-      );
-      setData(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  return (
-    <>
-      <div>
-        <button onClick={onClick}>불러오기</button>
-      </div>
-      {data && (
-        <textarea
-          rows="7"
-          value={JSON.stringify(data, null, 2)}
-          readOnly="true"
-        />
-      )}
-    </>
-  );
+  // const [data, setData] = useState(null);
+  // const onClick = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "http://newsapi.org/v2/top-headlines?country=kr&apiKey=8b03715d8e07427093ea24fa793a2d64"
+  //     );
+  //     setData(response.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  return <NewsList />;
 };
 
 export default App;
