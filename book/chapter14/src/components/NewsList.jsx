@@ -15,7 +15,7 @@ const NewsListBlock = styled.div`
     padding-right: 1rem;
   }
 `;
-const NewsList = () => {
+const NewsList = ({ category }) => {
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -24,8 +24,9 @@ const NewsList = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        const query = category === "all" ? "" : `&category=${category}`;
         const response = await axios.get(
-          "http://newsapi.org/v2/top-headlines?country=kr&apiKey=8b03715d8e07427093ea24fa793a2d64"
+          `http://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=8b03715d8e07427093ea24fa793a2d64`
         );
         setArticles(response.data.articles);
       } catch (err) {
@@ -34,7 +35,7 @@ const NewsList = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [category]);
 
   if (loading) {
     return <NewsListBlock>대기중...</NewsListBlock>;
