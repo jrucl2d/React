@@ -14,7 +14,7 @@ const ColorProvider = ({ children }) => {
 
   const value = {
     state: { color, subcolor },
-    action: { setColor, setSubcolor },
+    actions: { setColor, setSubcolor },
   };
   return (
     <ColorContext.Provider value={value}>{children}</ColorContext.Provider>
