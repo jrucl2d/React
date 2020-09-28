@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
 const store = createStore(reducer);
 
 const render = () => {
-  const state = store.getStore(); // 현재 상태 불러옴
+  const state = store.getState(); // 현재 상태 불러옴
   if (state.toggle) {
     divToggle.classList.add("active");
   } else {
@@ -52,3 +52,14 @@ const render = () => {
   counter.innerText = state.counter;
 };
 render();
+store.subscribe(render);
+
+divToggle.addEventListener("click", () => {
+  store.dispatch(toggleSwitch());
+});
+btnIncrease.addEventListener("click", () => {
+  store.dispatch(increase(1));
+});
+btnDecrease.addEventListener("click", () => {
+  store.dispatch(decrease());
+});
