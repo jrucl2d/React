@@ -1,35 +1,36 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { changeInput, insert, toggle, remove } from "../modules/todos";
 import Todos from "../components/Todos";
+import useActions from "../lib/useActions";
 
-const TodosContainer = ({
-  input,
-  todos,
-  changeInput,
-  insert,
-  toggle,
-  remove,
-}) => {
+const TodosContainer = () => {
+  const { input, todos } = useSelector((state) => ({
+    input: state.todos.input,
+    todos: state.todos.todos,
+  }));
+  //   const dispatch = useDispatch();
+  //   const onChangeInput = useCallback((input) => dispatch(changeInput(input)), [
+  //     dispatch,
+  //   ]);
+  //   const onInsert = useCallback((id) => dispatch(insert(id)), [dispatch]);
+  //   const onToggle = useCallback((id) => dispatch(toggle(id)), [dispatch]);
+  //   const onRemove = useCallback((id) => dispatch(remove(id)), [dispatch]);
+
+  // 액션함수 배열, deps 배열 이 안의 원소가 바뀌면 액션을 디스패치하는 함수를 새로 만듦
+  const [onChangeInput, onInsert, onToggle, onRemove] = useActions(
+    [changeInput, insert, toggle, remove],
+    []
+  );
   return (
     <Todos
       input={input}
       todos={todos}
-      onChangeInput={changeInput}
-      onInsert={insert}
-      onToggle={toggle}
-      onRemove={remove}
+      onChangeInput={onChangeInput}
+      onInsert={onInsert}
+      onToggle={onToggle}
+      onRemove={onRemove}
     />
   );
 };
-
-export default connect(
-  // 구조분해 할당으로 todos를 분리. state.todos 대신 todos로
-  ({ todos }) => ({ input: todos.input, todos: todos.todos }),
-  {
-    changeInput,
-    insert,
-    toggle,
-    remove,
-  }
-)(TodosContainer);
+export default React.memo(TodosContainer);
