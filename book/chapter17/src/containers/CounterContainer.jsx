@@ -1,4 +1,5 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Counter from "../components/Counter";
 import { increase, decrease } from "../modules/counter";
@@ -15,14 +16,29 @@ const mapStateToProps = (state) => ({
 });
 
 // 액션 생성 함수를 컴포넌트의 props로 넘겨주기 위해 사용하는 함수
-const mapDispatchToProps = (dispatch) => ({
-  // 임시 함수
-  increase: () => {
-    return dispatch(increase());
-  },
-  decrease: () => {
-    return dispatch(decrease());
-  },
-});
+const mapDispatchToProps = (dispatch) =>
+  // {
+  //   // 임시 함수
+  //   increase: () => {
+  //     return dispatch(increase());
+  //   },
+  //   decrease: () => {
+  //     return dispatch(decrease());
+  //   },
+  // }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CounterContainer);
+  // redux 안의 아래 유틸 함수 사용해도 됨
+  bindActionCreators(
+    {
+      increase,
+      decrease,
+    },
+    dispatch
+  );
+
+// export default connect(mapStateToProps, mapDispatchToProps)(CounterContainer);
+
+export default connect((state) => ({ number: state.counter.number }), {
+  increase,
+  decrease,
+})(CounterContainer);
