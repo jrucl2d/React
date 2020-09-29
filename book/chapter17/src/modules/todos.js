@@ -1,4 +1,5 @@
 import { createAction, handleActions } from "redux-actions";
+import produce from "immer";
 
 // 액션 타입 정의
 const CHANGE_INPUT = "todos/CHANGE_INPUT"; // 인풋 값을 변경
@@ -97,16 +98,14 @@ const todos = handleActions(
       ...state,
       todos: state.todos.concat(todo),
     }),
-    [TOGGLE]: (state, action) => ({
-      ...state,
-      todos: state.todos.map(
-        (todo) =>
-          todo.id === action.payload ? { ...todo, done: !todo.done } : todo // 추가 데이터는 모두 payload로 접근해야 함
-      ),
-    }),
+    [TOGGLE]: (state, { payload: id }) =>
+      produce(state, (draft) => {
+        const todo = draft.todos.find((todo) => todo.id === id);
+        todo.done = !todo.done;
+      }),
     [REMOVE]: (state, action) => ({
       ...state,
-      todos: state.todos.fileter((todo) => todo.id !== action.payload),
+      todos: state.todos.filter((todo) => todo.id !== action.payload),
     }),
   },
   initialState
