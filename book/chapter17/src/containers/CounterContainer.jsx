@@ -38,6 +38,7 @@ const mapDispatchToProps = (dispatch) =>
 
 // export default connect(mapStateToProps, mapDispatchToProps)(CounterContainer);
 
+// 한 번에 써도 되며, 액션 생성 함수를 객체로 보내면 알아서 내부에서 bindActionCreators를 해줌
 export default connect((state) => ({ number: state.counter.number }), {
   increase,
   decrease,
