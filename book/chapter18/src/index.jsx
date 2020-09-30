@@ -5,13 +5,20 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
-import rootReducer from "./modules";
+import rootReducer, { rootSaga } from "./modules";
 // import loggerMiddleware from "./lib/loggerMIddleware";
 import { createLogger } from "redux-logger";
 import reduxThunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 const logger = createLogger();
-const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk)); // 중간에 미들웨어 장착
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(logger, reduxThunk, sagaMiddleware))
+); // 중간에 미들웨어 장착
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
