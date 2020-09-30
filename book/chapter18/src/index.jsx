@@ -6,9 +6,11 @@ import * as serviceWorker from "./serviceWorker";
 import { applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
 import rootReducer from "./modules";
-import loggerMiddleware from "./lib/loggerMIddleware";
+// import loggerMiddleware from "./lib/loggerMIddleware";
+import { createLogger } from "redux-logger";
 
-const store = createStore(rootReducer, applyMiddleware(loggerMiddleware)); // 중간에 미들웨어 장착
+const logger = createLogger();
+const store = createStore(rootReducer, applyMiddleware(logger)); // 중간에 미들웨어 장착
 
 ReactDOM.render(
   <Provider store={store}>
