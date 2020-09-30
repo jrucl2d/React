@@ -8,9 +8,10 @@ import { Provider } from "react-redux";
 import rootReducer from "./modules";
 // import loggerMiddleware from "./lib/loggerMIddleware";
 import { createLogger } from "redux-logger";
+import reduxThunk from "redux-thunk";
 
 const logger = createLogger();
-const store = createStore(rootReducer, applyMiddleware(logger)); // 중간에 미들웨어 장착
+const store = createStore(rootReducer, applyMiddleware(logger, reduxThunk)); // 중간에 미들웨어 장착
 
 ReactDOM.render(
   <Provider store={store}>
