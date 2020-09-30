@@ -12,8 +12,15 @@ const SampleContainer = ({
   loadingUsers,
 }) => {
   useEffect(() => {
-    getPost(1);
-    getUsers(1);
+    const fn = async () => {
+      try {
+        getPost(1);
+        getUsers(1);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fn();
   }, [getPost, getUsers]);
 
   return (
@@ -27,11 +34,11 @@ const SampleContainer = ({
 };
 
 export default connect(
-  ({ sample }) => ({
+  ({ sample, loading }) => ({
     post: sample.post, // state.sample.post
     users: sample.users,
-    loadingPost: sample.loading.GET_POST,
-    loadingUsers: sample.loading.GET_USERS,
+    loadingPost: loading.GET_POST, // initial state엔 안 들어가 있지만 GET_USERS, GET_POST가 만들어짐
+    loadingUsers: loading.GET_USERS,
   }),
   {
     getPost,
