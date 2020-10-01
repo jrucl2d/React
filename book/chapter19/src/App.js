@@ -1,29 +1,25 @@
-import React, { Component } from "react";
+import React, { useState, Suspense } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+const SplitMe = React.lazy(() => import("./SplitMe"));
 
-class App extends Component {
-  state = {
-    SplitMe: null,
+const App = () => {
+  const [visible, setVisible] = useState(false);
+  const onClick = () => {
+    setVisible(true);
   };
-  handleClick = async () => {
-    const loadedModule = await import("./SplitMe");
-    this.setState({
-      SplitMe: loadedModule.default, // 컴포넌트 자체를 state에 넣음
-    });
-  };
-  render() {
-    const { SplitMe } = this.state;
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p onClick={this.handleClick}>Hello React!</p>
-          {SplitMe && <SplitMe />}
-        </header>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p onClick={onClick}>Hello React!</p>
+        {/* 안 보일 때는 loading...을 보여줌 */}
+        <Suspense fallback={<div>loading…</div>}>
+          {visible && <SplitMe />}
+        </Suspense>
+      </header>
+    </div>
+  );
+};
 
 export default App;
