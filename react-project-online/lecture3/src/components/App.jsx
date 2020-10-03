@@ -1,15 +1,10 @@
 import React, { useState } from "react";
+import Contact from "./Contact";
 
 const App = () => {
-  const [name, setName] = useState("");
-  const onClick = () => {
-    setName("Yuseonggeun");
-  };
-
   return (
     <>
-      <button onClick={onClick}>Click Me</button>
-      <div>Hello!!!! {name}</div>
+      <Contact />
     </>
   );
 };
