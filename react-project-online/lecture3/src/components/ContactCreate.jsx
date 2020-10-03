@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 const ContactCreate = ({ onCreate }) => {
   const [newInfo, setNewInfo] = useState({ name: "", phone: "" });

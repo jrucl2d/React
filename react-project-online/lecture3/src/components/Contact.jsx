@@ -48,15 +48,18 @@ const Contact = () => {
   };
 
   const onRemove = () => {
-    setContactData([
-      ...contactData.slice(0, selectedKey), // 선택된 키 이전과 이후만으로 새로운 배열 만듦
-      ...contactData.slice(selectedKey + 1, contactData.length - 1),
-    ]);
+    let newData = [];
+    newData = contactData.filter((v, i) => {
+      if (i !== selectedKey) {
+        return { ...v };
+      }
+    });
+    setContactData(newData);
     setSelectedKey(-1);
   };
 
   const onEdit = (name, phone) => {
-    const reData = [];
+    let reData = [];
     contactData.forEach((v) => {
       reData.push({ ...v });
     });
@@ -81,6 +84,8 @@ const Contact = () => {
       <ContactDetails
         isSelected={selectedKey !== -1}
         contact={contactData[selectedKey]}
+        onRemove={onRemove}
+        onEdit={onEdit}
       />
       <hr />
       <h2>Create</h2>
