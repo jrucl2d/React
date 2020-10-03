@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ContactInfo from "./ContactInfo";
 import ContactDetails from "./ContactDetails";
+import ContactCreate from "./ContactCreate";
 
 const Contact = () => {
   const [contactData, setContactData] = useState([
@@ -42,6 +43,28 @@ const Contact = () => {
     setSelectedKey(key);
   };
 
+  const onCreate = (Contact) => {
+    setContactData(contactData.concat(Contact));
+  };
+
+  const onRemove = () => {
+    setContactData([
+      ...contactData.slice(0, selectedKey), // 선택된 키 이전과 이후만으로 새로운 배열 만듦
+      ...contactData.slice(selectedKey + 1, contactData.length - 1),
+    ]);
+    setSelectedKey(-1);
+  };
+
+  const onEdit = (name, phone) => {
+    const reData = [];
+    contactData.forEach((v) => {
+      reData.push({ ...v });
+    });
+    reData[selectedKey].name = name;
+    reData[selectedKey].phone = phone;
+    setContactData(reData);
+  };
+
   return (
     <div>
       <h1>Contacts</h1>
@@ -59,6 +82,9 @@ const Contact = () => {
         isSelected={selectedKey !== -1}
         contact={contactData[selectedKey]}
       />
+      <hr />
+      <h2>Create</h2>
+      <ContactCreate onCreate={onCreate} />
     </div>
   );
 };
