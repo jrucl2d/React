@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const ContactCreate = ({ onCreate }) => {
   const [newInfo, setNewInfo] = useState({ name: "", phone: "" });
+  const ref = useRef(null);
 
   const onChange = (e) => {
     setNewInfo({
@@ -10,20 +11,23 @@ const ContactCreate = ({ onCreate }) => {
     });
   };
 
-  const onClick = () => {
+  const onClick = (e) => {
+    e.preventDefault();
     onCreate({ name: newInfo.name, phone: newInfo.phone });
     setNewInfo({ name: "", phone: "" });
+    ref.current.focus();
   };
   return (
     <div>
       <h2>Create Contact</h2>
-      <p>
+      <form onSubmit={onClick}>
         <input
           type="text"
           name="name"
           placeholder="name"
           value={newInfo.name}
           onChange={onChange}
+          ref={ref}
         />
         <input
           type="text"
@@ -32,8 +36,9 @@ const ContactCreate = ({ onCreate }) => {
           value={newInfo.phone}
           onChange={onChange}
         />
-      </p>
-      <button onClick={onClick}>Create</button>
+        <br />
+        <button type="submit">Create</button>
+      </form>
     </div>
   );
 };
