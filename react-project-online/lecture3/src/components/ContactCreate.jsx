@@ -1,21 +1,18 @@
 import React, { useState, useRef } from "react";
 
 const ContactCreate = ({ onCreate }) => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [newInfo, setNewInfo] = useState({ name: "", phone: "" });
 
-  const onChanageName = (e) => {
-    setName(e.target.value);
-  };
-
-  const onChanagePhone = (e) => {
-    setPhone(e.target.value);
+  const onChange = (e) => {
+    setNewInfo({
+      ...newInfo,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const onClick = () => {
-    onCreate({ name, phone });
-    setName("");
-    setPhone("");
+    onCreate({ name: newInfo.name, phone: newInfo.phone });
+    setNewInfo({ name: "", phone: "" });
   };
   return (
     <div>
@@ -25,15 +22,15 @@ const ContactCreate = ({ onCreate }) => {
           type="text"
           name="name"
           placeholder="name"
-          value={name}
-          onChange={onChanageName}
+          value={newInfo.name}
+          onChange={onChange}
         />
         <input
           type="text"
           name="phone"
           placeholder="phone"
-          value={phone}
-          onChange={onChanagePhone}
+          value={newInfo.phone}
+          onChange={onChange}
         />
       </p>
       <button onClick={onClick}>Create</button>
