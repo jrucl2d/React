@@ -8,7 +8,7 @@ module.exports = {
     extensions: [".js", ".jsx"],
   },
   entry: {
-    app: "./client",
+    app: "./src/client",
   },
   module: {
     rules: [
@@ -16,16 +16,7 @@ module.exports = {
         test: /\.jsx?$/,
         loader: "babel-loader",
         options: {
-          presets: [
-            [
-              "@babel/preset-env",
-              {
-                targets: { browsers: ["last 2 chrome versions"] },
-                debug: true,
-              },
-            ],
-            "@babel/preset-react",
-          ],
+          presets: ["@babel/preset-env", "@babel/preset-react"],
           plugins: [
             "@babel/plugin-proposal-class-properties",
             "react-hot-loader/babel",
