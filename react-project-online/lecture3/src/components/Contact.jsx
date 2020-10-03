@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ContactInfo from "./ContactInfo";
 import ContactDetails from "./ContactDetails";
 import ContactCreate from "./ContactCreate";
@@ -25,15 +25,18 @@ const Contact = () => {
   const [keyword, setKeyword] = useState("");
   const [selectedKey, setSelectedKey] = useState(-1);
 
-  const mapToComponent = (data) => {
-    data.sort();
-    data = data.filter((contact) => {
-      return contact.name.toLowerCase().indexOf(keyword.toLowerCase()) > -1;
-    });
-    return data.map((contact, i) => (
-      <ContactInfo contact={contact} key={i} onClick={() => onClick(i)} />
-    ));
-  };
+  const mapToComponent = useCallback(
+    (data) => {
+      data.sort();
+      data = data.filter((contact) => {
+        return contact.name.toLowerCase().indexOf(keyword.toLowerCase()) > -1;
+      });
+      return data.map((contact, i) => (
+        <ContactInfo contact={contact} key={i} onClick={() => onClick(i)} />
+      ));
+    },
+    [contactData]
+  );
 
   const onChange = (e) => {
     setKeyword(e.target.value);
@@ -67,6 +70,19 @@ const Contact = () => {
     reData[selectedKey].phone = phone;
     setContactData(reData);
   };
+
+  // 최초 실행
+  useEffect(() => {
+    const innerData = localStorage.contactData;
+    if (innerData) {
+      setContactData(JSON.parse(innerData));
+    }
+  }, []);
+
+  // contactData가 바뀌면 로컬 스토리지 업데이트
+  useEffect(() => {
+    localStorage.contactData = JSON.stringify(contactData);
+  }, [contactData]);
 
   return (
     <div>
