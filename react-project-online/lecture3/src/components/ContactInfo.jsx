@@ -1,11 +1,7 @@
 import React from "react";
 
-const ContactInfo = ({ contact }) => {
-  return (
-    <div>
-      {contact.name} {contact.phone}
-    </div>
-  );
+const ContactInfo = ({ contact, onClick }) => {
+  return <div onClick={onClick}>{contact.name}</div>;
 };
 
 export default ContactInfo;

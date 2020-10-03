@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ContactInfo from "./ContactInfo";
+import ContactDetails from "./ContactDetails";
 
 const Contact = () => {
   const [contactData, setContactData] = useState([
@@ -21,16 +22,24 @@ const Contact = () => {
     },
   ]);
   const [keyword, setKeyword] = useState("");
+  const [selectedKey, setSelectedKey] = useState(-1);
+
   const mapToComponent = (data) => {
     data.sort();
     data = data.filter((contact) => {
       return contact.name.toLowerCase().indexOf(keyword.toLowerCase()) > -1;
     });
-    return data.map((contact, i) => <ContactInfo contact={contact} key={i} />);
+    return data.map((contact, i) => (
+      <ContactInfo contact={contact} key={i} onClick={() => onClick(i)} />
+    ));
   };
 
   const onChange = (e) => {
     setKeyword(e.target.value);
+  };
+
+  const onClick = (key) => {
+    setSelectedKey(key);
   };
 
   return (
@@ -44,6 +53,12 @@ const Contact = () => {
         onChange={onChange}
       />
       <div>{mapToComponent(contactData)}</div>
+      <hr />
+      <h2>Details</h2>
+      <ContactDetails
+        isSelected={selectedKey !== -1}
+        contact={contactData[selectedKey]}
+      />
     </div>
   );
 };
