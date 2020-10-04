@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/:id", (req, res, next) => {
-  res.send(`Received a GET request, param: ${req.params.id}`);
-});
+router.get("/:username", (req, res, next) => {});
 
 router.post("/", (req, res, next) => {
   res.json({ success: true });
