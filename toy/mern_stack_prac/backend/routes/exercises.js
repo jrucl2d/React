@@ -51,17 +51,16 @@ router.delete("/:id", async (req, res, next) => {
 
 router.put("/update/:id", async (req, res, next) => {
   try {
-    const exercise = await Exercise.findById(req.params.id);
-    exercise.username = req.body.username;
-    exercise.desc = req.body.desc;
-    exercise.duration = +req.body.duration;
-    exercise.date = Date.pared(req.body.date);
-    try {
-      Exercise.create(exercise);
-      res.json("Exercise updated!");
-    } catch (err1) {
-      throw err1;
-    }
+    await Exercise.update(
+      { _id: req.params.id },
+      {
+        username: req.body.username,
+        desc: req.body.desc,
+        duration: +req.body.duration,
+        date: Date.parse(req.body.date),
+      }
+    );
+    res.json("Exercise updated!");
   } catch (err) {
     console.error(err);
     res.status(400).json("Error: " + err);
